@@ -15,7 +15,6 @@ class VirtualStackMachine:
 
 
     def run(self, debug=False):
-        
         self.mar = self.pc
         self.ir = self.memory[self.mar]
         self.pc += 1
@@ -90,10 +89,10 @@ class VirtualStackMachine:
                     self.pc += 1
                 self.tosreg = self.data_stack.pop()
 
-            elif self.ir is 0x13:  # [CALL]
+            elif self.ir is 0x13:  # [CALL] TODO
                 pass
 
-            elif self.ir is 0x14:  # [EXIT]
+            elif self.ir is 0x14:  # [EXIT] TODO
                 pass
 
             elif self.ir is 0x15:  # [LIT]
@@ -103,7 +102,7 @@ class VirtualStackMachine:
                 self.tosreg = self.memory[self.mar]
 
             elif self.ir is 0x16:  # [SYS]
-                self.syscall()
+                self._syscall()
 
             else:
                 pass  # TODO: error
@@ -114,7 +113,12 @@ class VirtualStackMachine:
             self.pc += 1
 
 
-    def syscall(self):
+    def _syscall(self):
         pass
+
+
+    def _print_debug(self):
+        pass
+
 
 
