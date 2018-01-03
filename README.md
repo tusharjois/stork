@@ -1,6 +1,6 @@
 # stork
 
-`stork` is a combination of a virtual stack machine, an instruction set for the stack machine, and an assembler to bridge the two, all written in C++. It is derived from Philip Koopman's book, "Stack Computers: the new wave" first published in 1989.
+`stork` is a combination of a virtual stack machine, an instruction set for the stack machine, and an assembler to bridge the two, all written in Python. It is derived from Philip Koopman's book, "Stack Computers: the new wave" first published in 1989.
 
 ## Usage
 
