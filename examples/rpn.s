@@ -35,14 +35,6 @@ main:
 	[IF]
 	divide
 
-	# test if ?
-	DUP
-	[LIT]
-	63
-	-
-	[IF]
-	print_all
-
 	# test if ^
 	DUP
 	[LIT]
@@ -73,11 +65,11 @@ main:
 
 read:
 	[LIT]
-	0x0001  # memory location
+	0x0004  # memory location
 	[LIT]
-	0x1     # desired length of input
+	0x4     # desired length of input
 	[LIT]
-	0x3     # syscall: read input
+	0x4     # syscall: read input
 	[SYS]
 
 	[LIT]   # check output 
@@ -87,7 +79,7 @@ read:
 	end     # if the end result is unexpected
 	
 	[LIT]   # push result to stack
-	0x0001
+	0x0004
 	@
 
 	[EXIT]
@@ -112,81 +104,36 @@ subtract:
 
 multiply:
 	DROP
-	[NOP]  # TODO
+	*
+	SWAP
+	DROP
+
+	[LIT]
+	0
+	[IF]
+	main
 
 divide:
 	DROP
-	[NOP]  # TODO
-
-print_pop: # TODO
+	/
+	SWAP
 	DROP
-	[CALL]
-	print_one
-	DROP
-	[CALL]
-	print_return
 	
 	[LIT]
 	0
 	[IF]
 	main
 
-print_one:
-	# convert top to char
+print_pop: # TODO
+	DROP
 	[LIT]
-	48
-	+
-
-	# store in memory
-	[LIT]
-	0x0000 
-	!
-
-	# store space in memory
-	[LIT]
-	32
-	[LIT]
-	0x0001
-	!
-	
-	[LIT]
-	0x0000  # memory location
-	[LIT]
-	0x2     # desired length of input
-	[LIT]
-	0x2     # syscall: print string
-
+	0x1     # syscall: print string
 	[SYS]
-
-	DROP
-	
-	[EXIT]
-
-print_return:
-	# store newline in memory
-	[LIT]
-	10
-	[LIT]
-	0x0000
-	!
 	
 	[LIT]
-	0x0000  # memory location
-	[LIT]
-	0x1     # desired length of input
-	[LIT]
-	0x2     # syscall: print string
-	
-	[SYS]
-
-	DROP
-
-	[EXIT]
-
-
-print_all: # TODO
-	DROP
-	[NOP]
+	0
+	[IF]
+	main
 
 end:
 	DROP

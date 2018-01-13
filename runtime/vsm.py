@@ -35,11 +35,21 @@ class VirtualStackMachine:
             elif self.ir == 0x03:  # -
                 self.tosreg = self.data_stack.pop() - self.tosreg
 
-            elif self.ir == 0x04:  # * TODO
-                pass
+            elif self.ir == 0x04:  # *
+                self.return_stack.append((self.tosreg * \
+                    self.data_stack[-1]) & 0xff)
+                self.return_stack.append((self.tosreg * \
+                    self.data_stack.pop()) >> 8)
+                self.data_stack.append(self.return_stack.pop())
+                self.tosreg = self.return_stack.pop()
 
             elif self.ir == 0x05:  # / TODO
-                pass
+                self.return_stack.append((self.data_stack[-1] // \
+                    self.tosreg) & 0xff)
+                self.return_stack.append((self.data_stack.pop() // \
+                    self.tosreg) >> 8)
+                self.data_stack.append(self.return_stack.pop())
+                self.tosreg = self.return_stack.pop()
 
             elif self.ir == 0x06:  # >R
                 self.return_stack.append(self.tosreg)
@@ -120,7 +130,8 @@ class VirtualStackMachine:
                 continue
 
             else:
-                pass  # TODO: error
+                raise ValueError('Unknown instruction at PC' + \
+                    ' 0x{:04x}'.format(self.pc-1))
         
             # Fetch next instruction
             self.mar = self.pc
@@ -133,9 +144,8 @@ class VirtualStackMachine:
 
 
     def _syscall(self):
-        if self.tosreg == 0x1:    # print number
-            self.mar = self.data_stack.pop()
-            print("{}".format(self.memory[self.mar], end=''))
+        if self.tosreg == 0x1:    # print number from stack
+            print("{}".format(self.data_stack.pop()))
         elif self.tosreg == 0x2:  # print string
             self.tosreg = self.data_stack.pop()
             self.mar = self.data_stack.pop()
@@ -144,20 +154,23 @@ class VirtualStackMachine:
                 print(chr(self.memory[self.mar + i]), end='')
                 count += 1
             self.tosreg = count
-        elif self.tosreg == 0x3:  # read input
+        elif self.tosreg == 0x3:  # read int to stack
+            get_line = input()
+            self.tosreg = int(get_line)
+        elif self.tosreg == 0x4:  # read string
             get_line = input()
             self.tosreg = self.data_stack.pop()
             self.mar = self.data_stack.pop()
             for i in range(0, self.tosreg):
-                if i >= self.tosreg:
+                if i >= len(get_line):
                     self.memory[self.mar + i] = 0x0
                 else:
                     self.memory[self.mar + i] = ord(get_line[i])
-        elif self.tosreg == 0x4:  # open
+        elif self.tosreg == 0x5:  # open
             pass
-        elif self.tosreg == 0x5:  # file_read
+        elif self.tosreg == 0x6:  # file_read
             pass
-        elif self.tosreg == 0x6:  # file_write
+        elif self.tosreg == 0x7:  # file_write
             pass
         else:
             self.tosreg = 0x0  # error code
