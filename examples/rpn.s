@@ -1,3 +1,7 @@
+# example rpn calculator
+# only works with single digit numbers
+# TODO: add more support for multi digit
+
 main:
 	# get input
 	[CALL]
