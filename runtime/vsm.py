@@ -1,3 +1,5 @@
+import sys
+
 class VirtualStackMachine:
     def __init__(self, code):
         self.data_stack = []
@@ -20,6 +22,7 @@ class VirtualStackMachine:
         while self.ir != 0x00:
             if debug:
                 self._print_debug()
+                # TODO breakpoints input()
 
             if self.ir == 0x01:    # !
                 self.mar = self.tosreg
@@ -94,7 +97,6 @@ class VirtualStackMachine:
 
             elif self.ir == 0x13:  # [CALL]
                 self.return_stack.append(self.pc + 2)
-                print(hex(self.pc))
                 self.mar = self.pc
                 self.pc = self.memory[self.mar]
                 self.mar += 1 
@@ -127,6 +129,7 @@ class VirtualStackMachine:
 
         if debug:
             self._print_debug()
+            # TODO input()
 
 
     def _syscall(self):
@@ -134,6 +137,7 @@ class VirtualStackMachine:
             self.mar = self.data_stack.pop()
             print("{}".format(self.memory[self.mar], end=''))
         elif self.tosreg == 0x2:  # print string
+            self.tosreg = self.data_stack.pop()
             self.mar = self.data_stack.pop()
             count = 0
             for i in range(0, self.tosreg):
@@ -160,18 +164,18 @@ class VirtualStackMachine:
 
     def _print_debug(self):
         # we need to subtract because we inc pc before entering the loop 
-        print("PC: 0x{:04x} -------".format(self.pc - 1))
-        print("Data Stack:")
-        print('    0x{:04x}'.format(self.tosreg))
+        print("PC: 0x{:04x} -------".format(self.pc - 1), file=sys.stderr)
+        print("Data Stack:", file=sys.stderr)
+        print('    0x{:04x}'.format(self.tosreg), file=sys.stderr)
         for elem in reversed(self.data_stack):
-            print('    0x{:04x}'.format(elem))
-        print()
-        print('Return Stack:')
+            print('    0x{:04x}'.format(elem), file=sys.stderr)
+        print(file=sys.stderr)
+        print('Return Stack:', file=sys.stderr)
         for elem in reversed(self.return_stack):
-            print('    0x{:04x}'.format(elem))
-        print()
-        print('------------------')
-        print()
+            print('    0x{:04x}'.format(elem), file=sys.stderr)
+        print(file=sys.stderr)
+        print('------------------', file=sys.stderr)
+        print(file=sys.stderr)
 
 
 

@@ -93,8 +93,8 @@ read:
 	[EXIT]
 
 add:
-	[LIT]
-	0x4
+	DROP
+	+
 	
 	[LIT]
 	0
@@ -102,25 +102,92 @@ add:
 	main
 
 subtract:
-	[LIT]
-	0x7
-	
+	DROP
+	-
+
 	[LIT]
 	0
 	[IF]
 	main
 
 multiply:
+	DROP
 	[NOP]  # TODO
 
 divide:
+	DROP
 	[NOP]  # TODO
 
 print_pop: # TODO
-	[NOP]
+	DROP
+	[CALL]
+	print_one
+	DROP
+	[CALL]
+	print_return
+	
+	[LIT]
+	0
+	[IF]
+	main
+
+print_one:
+	# convert top to char
+	[LIT]
+	48
+	+
+
+	# store in memory
+	[LIT]
+	0x0000 
+	!
+
+	# store space in memory
+	[LIT]
+	32
+	[LIT]
+	0x0001
+	!
+	
+	[LIT]
+	0x0000  # memory location
+	[LIT]
+	0x2     # desired length of input
+	[LIT]
+	0x2     # syscall: print string
+
+	[SYS]
+
+	DROP
+	
+	[EXIT]
+
+print_return:
+	# store newline in memory
+	[LIT]
+	10
+	[LIT]
+	0x0000
+	!
+	
+	[LIT]
+	0x0000  # memory location
+	[LIT]
+	0x1     # desired length of input
+	[LIT]
+	0x2     # syscall: print string
+	
+	[SYS]
+
+	DROP
+
+	[EXIT]
+
 
 print_all: # TODO
+	DROP
 	[NOP]
 
 end:
+	DROP
 	.
