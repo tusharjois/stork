@@ -92,7 +92,7 @@ The stack machine implements the instructions set forth by Koopman, found here, 
 
 ### Assembler
 
-Before the compiler runs, the preprocessor indexes labels to replace them in code with addresses. Labels are of the format `identifier:`, where `identifier` is any set of ASCII letters and numbers that do not correspond to an instruction. Note that identifiers must start with a letter. It also parses `include` directives and appends those files to the end of the program. The assembler converts instruction source files into binary files readable by the Virtual Stack Machine. Newlines (`"\n"`) delineate between instructions in source files. Tabs (`"\t"`) and spaces (`" "`) can be used for formatting. Comments are indicated by `%`; the assembler ignores everything after a `%` up to the next newline.
+Before the compiler runs, the preprocessor indexes labels to replace them in code with addresses. Labels are of the format `identifier:`, where `identifier` is any set of ASCII letters and numbers that do not correspond to an instruction. Note that identifiers must start with a letter. It also parses `include` directives and appends those files to the end of the program. The assembler converts instruction source files into binary files readable by the Virtual Stack Machine. Newlines (`"\n"`) delineate between instructions in source files. Tabs (`"\t"`) and spaces (`" "`) can be used for formatting. Comments are indicated by `#`; the assembler ignores everything after a `#` up to the next newline.
 
 Example source files are included in the `examples/` directory of the repository.
 

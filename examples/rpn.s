@@ -47,31 +47,68 @@ main:
 	DUP
 	[LIT]
 	94
+	-
+	[IF]
 	print_pop
 
 	# test if !
 	DUP
 	[LIT]
 	33
+	-
+	[IF]
 	end
+
+	# if it's not a command, it should stay on the stack
+	# convert character to integer
+	[LIT]
+	48
+	-
 
 	# jump back to main
 	[LIT]
 	0
 	[IF]
-	exit
+	main
 
 read:
 	[LIT]
-	[NOP] # TODO
+	0x0001  # memory location
+	[LIT]
+	0x1     # desired length of input
+	[LIT]
+	0x3     # syscall: read input
+	[SYS]
+
+	[LIT]   # check output 
+	0x0
+	-
+	[IF]
+	end     # if the end result is unexpected
+	
+	[LIT]   # push result to stack
+	0x0001
+	@
+
+	[EXIT]
 
 add:
 	[LIT]
 	0x4
+	
+	[LIT]
+	0
+	[IF]
+	main
 
 subtract:
 	[LIT]
 	0x7
+	
+	[LIT]
+	0
+	[IF]
+	main
 
 multiply:
 	[NOP]  # TODO
@@ -85,5 +122,5 @@ print_pop: # TODO
 print_all: # TODO
 	[NOP]
 
-exit:
+end:
 	.
