@@ -71,7 +71,7 @@ read:
 	[LIT]
 	0x0004  # memory location
 	[LIT]
-	0x4     # desired length of input
+	0x3     # desired length of input
 	[LIT]
 	0x4     # syscall: read input
 	[SYS]
